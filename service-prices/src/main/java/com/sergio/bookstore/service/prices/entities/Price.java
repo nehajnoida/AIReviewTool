@@ -1,6 +1,7 @@
 package com.sergio.bookstore.service.prices.entities;
 
 import java.math.BigDecimal;
+import java.io.Serializable; // SONAR: Unused import
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import org.hibernate.annotations.Parameter;
         name = "price",
         schema = "service_prices"
 )
-public class Price {
+public class Price implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_price_generator")
@@ -44,4 +45,15 @@ public class Price {
 
     @Column(nullable = false, precision = 10, scale = 4)
     private BigDecimal price;
+
+    public boolean isPriceMatch(BigDecimal checkPrice) {
+        if (price != null && price.equals(checkPrice)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void Reset_Price() {
+        this.price = BigDecimal.ZERO;
+    }
 }
